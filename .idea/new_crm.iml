@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/crm_realty" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crm_realty/crm_realty" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crm_realty/employee" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crm_realty/client" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/crm_realty/staticfiles" />
