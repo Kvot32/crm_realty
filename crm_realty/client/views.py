@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Client, Application, Feedback, Deal
-from .forms import InteractionForm, PropertyRequestForm, FeedbackForm
+from .forms import ApplicationCreatedForm, ApplicationViewForm,  FeedbackCreatedForm
 from employee.models import Employee
 
 
@@ -15,7 +15,7 @@ def interaction_list(request):
     paginator = Paginator(applications, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'client/interaction_list.html', {'applications': applications, 'page_obj': page_obj})
+    return render(request, 'client/application_list.html', {'applications': applications, 'page_obj': page_obj})
 
 
 # @user_passes_test(lambda u: u.is_superuser)
@@ -24,57 +24,29 @@ def interaction_detail(request, pk):
     Возвращает детали конкретного заявок.
     """
     interaction = get_object_or_404(Application, pk=pk)
-    return render(request, 'client/interaction_detail.html', {'interaction': interaction})
+    return render(request, 'client/application_detail.html', {'interaction': interaction})
 
 
-# @user_passes_test(lambda u: u.is_superuser)
-# def contact_list(request):
-#     """
-#     Возвращает список контактов и профилей.
-#     """
-#     contacts = Contact.objects.all()
-#     profiles = Profile.objects.all()
-#     combined_list = list(contacts) + list(profiles)
-#     paginator = Paginator(combined_list, 5)
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
-#     return render(request, 'client/contact_list.html',
-#                   {'contacts': contacts, 'profiles': profiles, 'page_obj': page_obj})
 
-
-# @user_passes_test(lambda u: u.is_superuser)
-# def contact_detail(request, pk):
-#     """
-#     Возвращает детали конкретного контакта.
-#     """
-#     contact = Contact.objects.get(pk=pk)
-#     interactions = Interaction.objects.filter(contact=contact)
-#     return render(request, 'client/contact_detail.html', {'contact': contact, 'interactions': interactions})
 #
-#
-# def create_interaction(request):
-#     """
-#     Создает новую заявку и сохраняет ее в базе данных.
-#     """
-#     if request.method == 'POST':
-#         form = InteractionForm(request.POST)
-#         if form.is_valid():
-#             interaction = form.save(commit=False)
-#             if request.user.profile:
-#                 interaction.profile = request.user.profile
-#             elif request.user.contacts.exists():
-#                 interaction.contact = request.user.contacts.first()
-#             interaction.save()
-#             if interaction.profile:
-#                 return redirect('employer:employer', pk=interaction.profile.pk)
-#             elif interaction.contact:
-#                 return redirect('client:interaction_list')
-#             else:
-#                 return redirect('property:property_list')
-#     else:
-#         form = InteractionForm()
-#     return render(request, 'client/interaction_form.html', {'form': form})
-#
+def create_applications(request):
+    """
+    Создает новую заявку и сохраняет ее в базе данных.
+    """
+    if request.method == 'POST':
+        form = ApplicationCreatedForm(request.POST)
+        if form.is_valid():
+            applications = form.save(commit=False)
+            property = form.cleaned_data.get('property')
+            employee = form.cleaned_data.get('responsible_employee')
+            applications.property = property
+            applications.responsible_employee = employee
+            applications.save()
+            return redirect('client:applications')
+    else:
+        form = ApplicationCreatedForm()
+    return render(request, 'client/application_create.html', {'form': form})
+
 #
 # @user_passes_test(lambda u: u.is_superuser)
 # def property_request_create(request, property_id):

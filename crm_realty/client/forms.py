@@ -1,26 +1,27 @@
 from django import forms
-from .models import Contact, Interaction, PropertyRequest, Feedback
+from .models import Client, Application, Feedback
 
 
-class ContactForm(forms.ModelForm):
+class ClientForm(forms.ModelForm):
     class Meta:
-        model = Contact
+        model = Client
         fields = ['name', 'email', 'phone', 'notes']
 
 
-class InteractionForm(forms.ModelForm):
+class ApplicationCreatedForm(forms.ModelForm):
     class Meta:
-        model = Interaction
-        fields = ['description']
+        model = Application
+        fields = ['description', 'client', 'property', 'status', 'responsible_employee']
 
 
-class PropertyRequestForm(forms.ModelForm):
+class ApplicationViewForm(forms.ModelForm):
     class Meta:
-        model = PropertyRequest
-        fields = ['user', 'property', 'status']
+        model = Application
+        fields = ['description', 'client', 'property', 'status', 'responsible_employee']
 
 
-class FeedbackForm(forms.ModelForm):
+class FeedbackCreatedForm(forms.ModelForm):
     class Meta:
         model = Feedback
-        fields = ['message']
+        fields = ['application', 'comment', 'responsible_employee']
+

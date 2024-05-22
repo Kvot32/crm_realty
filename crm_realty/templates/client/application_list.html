@@ -1,0 +1,40 @@
+{% extends 'client/base.html' %}
+
+{% block title %}Interaction List{% endblock %}
+
+{% block content %}
+    <h1>Interaction List</h1>
+    <ul>
+        {% for interaction in interactions %}
+            {% if interaction.client %}
+                <li><a href="{% url 'client:interaction_detail' pk=interaction.pk %}">
+                    {{ interaction.contact.name }} - {{ interaction.date }} - {{ interaction.description }}
+                </a></li>
+            {% elif interaction.profile %}
+                <li><a href="{% url 'client:interaction_detail' pk=interaction.pk %}">
+                    {{ interaction.profile.first_name }} - {{ interaction.date }} - {{ interaction.description }}
+                </a></li>
+            {% endif %}
+        {% empty %}
+            <li>No interactions available</li>
+        {% endfor %}
+    </ul>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    <p><a href="{% url 'client:create_interaction' %}">Create New Interaction</a></p>
+{% endblock %}

@@ -36,7 +36,7 @@ class Feedback(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
     comment = models.TextField()
     responsible_employee = models.ForeignKey('employee.Employee', on_delete=models.CASCADE)
-    date_time = models.DateTimeField()
+    date_time = models.DateTimeField(auto_now=True)
 
 
 class Deal(models.Model):
