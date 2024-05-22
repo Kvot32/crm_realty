@@ -1,0 +1,49 @@
+{% extends 'employee/base.html' %}
+
+{% block title %}
+    Update Profile
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Update Profile</div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ user_form.errors }}
+                            {{ employee_form.errors }}
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                {{ user_form.username }}
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                {{ user_form.first_name }}
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                {{ user_form.last_name }}
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                {{ user_form.email }}
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                {{ employee_form.phone }}
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                {{ employee_form.role }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
