@@ -9,6 +9,7 @@ class Property(models.Model):
         ('land', 'Land'),
         ('commercial', 'Commercial'),
     ]
+    id = models.IntegerField(primary_key=True)
     address = models.CharField(max_length=255)
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES)
     bedrooms = models.PositiveIntegerField()
@@ -19,4 +20,4 @@ class Property(models.Model):
     photo = models.ImageField(upload_to='property_photos/', blank=True, null=True)
 
     def __str__(self):
-        return f'{self.property_type} at {self.address}'
+        return f'{self.id} - {self.property_type} at {self.address}'
