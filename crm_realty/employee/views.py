@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LogoutView, LoginView
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 
@@ -81,3 +82,14 @@ def employee_login(request):
             return render(request, 'employee/login.html', {'error_message': 'Неверный логин или пароль'})
     else:
         return render(request, 'employee/login.html')
+
+# @user_passes_test(lambda u: u.is_superuser)
+def employees_list(request):
+    """
+    Возвращает список сотрудников.
+    """
+    employees = Employee.objects.all()
+    paginator = Paginator(employees, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'employee/employees_list.html', {'page_obj': page_obj})
