@@ -9,7 +9,7 @@ class Property(models.Model):
         ('land', 'Land'),
         ('commercial', 'Commercial'),
     ]
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True,auto_created=True)
     address = models.CharField(max_length=255)
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES)
     bedrooms = models.PositiveIntegerField()
