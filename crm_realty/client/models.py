@@ -33,10 +33,11 @@ class Application(models.Model):
 
 
 class Feedback(models.Model):
-    application = models.ForeignKey(Application, on_delete=models.CASCADE)
+    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='feedbacks')
     comment = models.TextField()
     responsible_employee = models.ForeignKey('employee.Employee', on_delete=models.CASCADE)
     date_time = models.DateTimeField(auto_now=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='feedbacks')
 
 
 class Deal(models.Model):

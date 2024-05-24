@@ -7,11 +7,11 @@
 </head>
 <body>
 <nav>
-    {% if user.is_superuser %}
-        <ul>
-            <li><a href="{% url 'client:contact_list' %}">Contacts</a></li>
-        </ul>
-    {% endif %}
+{#    {% if user.is_superuser %}#}
+{#        <ul>#}
+{#            <li><a href="{% url 'client:client_list' %}">Contacts</a></li>#}
+{#        </ul>#}
+{#    {% endif %}#}
     <ul>
         <li><a href="{% url 'property:property_list' %}">Property list</a></li>
     </ul>
