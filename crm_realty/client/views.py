@@ -110,6 +110,7 @@ def deal_detail(request, pk):
 
 
 def deal_update(request, pk):
+    """Обновление/изменение сделки"""
     deal = get_object_or_404(Deal, pk=pk)
     if request.method == 'POST':
         form = DealUpdateForm(request.POST, instance=deal)
