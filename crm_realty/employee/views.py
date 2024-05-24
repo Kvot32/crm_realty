@@ -69,7 +69,7 @@ class EmployerLogoutView(LogoutView):
     def get_success_url(self):
         return reverse_lazy('employee:login')
 
-
+"""Логин сотрудников"""
 def employee_login(request):
     if request.method == 'POST':
         username = request.POST['username']
