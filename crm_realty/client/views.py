@@ -1,10 +1,8 @@
-from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Client, Application, Feedback, Deal
-from .forms import ApplicationCreateForm, ApplicationViewForm, FeedbackCreateForm, DealCreateForm, DealDetailForm, \
-    DealUpdateForm
-from employee.models import Employee
+from .models import Application, Deal
+from .forms import ApplicationCreateForm, FeedbackCreateForm, DealCreateForm, DealUpdateForm
+from notifications.email import send_email_to_client, send_email_to_employee
 
 
 # @user_passes_test(lambda u: u.is_superuser)
@@ -38,10 +36,15 @@ def create_application(request):
             applications = form.save(commit=False)
             property = form.cleaned_data.get('property')
             employee = form.cleaned_data.get('responsible_employee')
+            client = form.cleaned_data.get('client')
             applications.property = property
+            applications.client = client
             applications.responsible_employee = employee
             applications.save()
+
             return redirect('client:applications_list')
+
+
     else:
         form = ApplicationCreateForm()
     return render(request, 'client/application_create.html', {'form': form})
@@ -79,6 +82,10 @@ def deal_create(request):
             deal.responsible_employee = employee
             deal.client = client
             deal.save()
+
+            send_email_to_client(client, deal)
+            send_email_to_employee(employee, deal)
+
             return redirect('client:deals_list')
         else:
             return render(request, 'client/deal_create.html', {"form": form})
