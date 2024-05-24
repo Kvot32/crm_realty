@@ -21,8 +21,6 @@ def send_email_to_client(client, deal):
         fail_silently=False,
         auth_user=email_host_user,
         auth_password=email_host_password,
-        host=email_host,
-        port=email_port
     )
 
 
@@ -46,6 +44,4 @@ def send_email_to_employee(employee, deal):
         fail_silently=False,
         auth_user=email_host_user,
         auth_password=email_host_password,
-        host=email_host,
-        port=email_port
     )
