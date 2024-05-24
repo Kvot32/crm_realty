@@ -1,0 +1,22 @@
+{% extends "client/base.html" %}
+
+{% block title %}
+    Детальная информация о сделке
+{% endblock %}
+
+{% block content %}
+    <h1>Детальная информация о сделке</h1>
+    <ul>
+        <li><strong>Номер сделки:</strong> {{ deal.id }}</li>
+        <li><strong>Статус:</strong> {{ deal.status }}</li>
+        <li><strong>Дата создания:</strong> {{ deal.created_at }}</li>
+        <li><strong>Заявка:</strong> {{ deal.application }}</li>
+        <li><strong>Ответственный сотрудник:</strong> {{ deal.responsible_employee }}</li>
+        <li><strong>Клиент:</strong> {{ deal.client }}</li>
+        {% if deal.documents %}
+            <li><strong>Документы:</strong> <a href="{{ deal.documents.url }}">{{ deal.documents.name }}</a></li>
+        {% endif %}
+        <li><strong>Описание:</strong> {{ deal.description }}</li>
+    </ul>
+    <li><a href="{% url 'client:deal_detail' pk=deal.pk %}">Обновить/Изменить данные о сделке</a></li>
+{% endblock %}

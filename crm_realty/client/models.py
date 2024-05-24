@@ -48,12 +48,14 @@ class Deal(models.Model):
         ('rejected', 'Отклонена клиентом'),
         ('closed', 'Закрыта')
     ]
-    application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    responsible_employee = models.ForeignKey('employee.Employee', on_delete=models.CASCADE, related_name='deals_responsible')
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='deals')
+    responsible_employee = models.ForeignKey('employee.Employee', on_delete=models.CASCADE, related_name='deals')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
     documents = models.FileField(upload_to='documents/', null=True, blank=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='deals')
 
     def __str__(self):
-        return f'Deal for {self.application}'
+        return f'Deal number {self.id} for {self.application}'

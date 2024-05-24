@@ -1,5 +1,5 @@
 from django import forms
-from .models import Client, Application, Feedback
+from .models import Client, Application, Feedback, Deal
 
 
 class ClientForm(forms.ModelForm):
@@ -25,3 +25,20 @@ class FeedbackCreateForm(forms.ModelForm):
         model = Feedback
         fields = ['application', 'comment', 'responsible_employee', 'client']
 
+
+class DealCreateForm(forms.ModelForm):
+    class Meta:
+        model = Deal
+        fields = ['application', 'responsible_employee', 'status', 'documents', 'description', 'client']
+
+
+class DealDetailForm(forms.ModelForm):
+    class Meta:
+        model = Deal
+        fields = ['application', 'responsible_employee', 'status', 'documents', 'description', 'client']
+
+
+class DealUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Deal
+        fields = ['application', 'responsible_employee', 'status', 'documents', 'description']

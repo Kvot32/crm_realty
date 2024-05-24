@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Client, Application, Feedback, Deal
-from .forms import ApplicationCreateForm, ApplicationViewForm, FeedbackCreateForm
+from .forms import ApplicationCreateForm, ApplicationViewForm, FeedbackCreateForm, DealCreateForm, DealDetailForm, \
+    DealUpdateForm
 from employee.models import Employee
 
 
@@ -15,7 +16,7 @@ def application_list(request):
     paginator = Paginator(applications, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'client/application_list.html', {'page_obj': page_obj})
+    return render(request, 'client/applications_list.html', {'page_obj': page_obj})
 
 
 # @user_passes_test(lambda u: u.is_superuser)
@@ -40,7 +41,7 @@ def create_application(request):
             applications.property = property
             applications.responsible_employee = employee
             applications.save()
-            return redirect('client:applications')
+            return redirect('client:applications_list')
     else:
         form = ApplicationCreateForm()
     return render(request, 'client/application_create.html', {'form': form})
@@ -59,7 +60,61 @@ def feedback_create(request):
             feedback.responsible_employee = employee
             feedback.client = client
             feedback.save()
-            return redirect('client:applications')
+            return redirect('client:applications_list')
     else:
         form = FeedbackCreateForm()
     return render(request, 'client/feedback_form.html', {'form': form})
+
+
+def deal_create(request):
+    """Создание сделки"""
+    if request.method == "POST":
+        form = DealCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            deal = form.save(commit=False)
+            application = form.cleaned_data.get("application")
+            employee = form.cleaned_data.get('responsible_employee')
+            client = form.cleaned_data.get('client')
+            deal.application = application
+            deal.responsible_employee = employee
+            deal.client = client
+            deal.save()
+            return redirect('client:deals_list')
+        else:
+            return render(request, 'client/deal_create.html', {"form": form})
+    else:
+        form = DealCreateForm()
+    return render(request, 'client/deal_create.html', {"form": form})
+
+
+def deals_list(request):
+    """Спиисок сделок"""
+    deals = Deal.objects.all().order_by('-created_at', 'id')
+    paginator = Paginator(deals, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'client/deals_list.html', {'page_obj': page_obj})
+
+
+def deal_detail(request, pk):
+    """Детальный просмотр сделки"""
+    deal = get_object_or_404(Deal, pk=pk)
+    return render(request, 'client/deal_detail.html', {"deal": deal})
+
+
+def deal_update(request, pk):
+    deal = get_object_or_404(Deal, pk=pk)
+    if request.method == 'POST':
+        form = DealUpdateForm(request.POST, instance=deal)
+        if form.is_valid():
+            deal = form.save(commit=False)
+            employee = form.cleaned_data.get('responsible_employee')
+            deal.responsible_employee = employee
+            deal.save()
+            return redirect('client:deals_list')
+        else:
+            return render(request, 'client/deal_update.html', {'form': form})
+
+    else:
+        form = DealUpdateForm()
+    return render(request, 'client/deal_update.html', {'form': form})

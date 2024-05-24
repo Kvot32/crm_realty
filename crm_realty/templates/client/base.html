@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Your Website{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
 <nav>
-{#    {% if user.is_superuser %}#}
-{#        <ul>#}
-{#            <li><a href="{% url 'client:client_list' %}">Contacts</a></li>#}
-{#        </ul>#}
-{#    {% endif %}#}
     <ul>
-        <li><a href="{% url 'property:property_list' %}">Property list</a></li>
+        <li><a href="{% url 'property:property_list' %}">Список объектов</a></li>
+        <li><a href="{% url 'client:deals_list' %}">Список сделок</a></li>
+        <li><a href="{% url 'client:applications_list' %}">Список заявок</a></li>
     </ul>
 </nav>
 
@@ -23,7 +20,6 @@
 </main>
 
 <footer>
-    <!-- Футер вашего сайта -->
 </footer>
 </body>
 </html>
