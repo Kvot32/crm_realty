@@ -1,6 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
-from employee.models import Employee
 
 
 class Client(models.Model):
